@@ -55,12 +55,80 @@ public class Array {
        size++;
     }
 
+    public int get(int index) {
+        if (index < 0 || index >= size){
+            throw new IllegalArgumentException("索引无效，数组越界");
+        }
+        return data[index];
+    }
+
+    public void set(int index, int element) {
+       if (index < 0 || index >= size) {
+           throw new IllegalArgumentException("索引无效，数组越界");
+       }
+       data[index] = element;
+    }
+
+    public boolean contains(int element) {
+        for (int i = 0; i < size; i++) {
+            if (data[i] == element) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int find(int element) {
+        for (int i = 0; i < size; i++) {
+            if (data[i] == element) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //删除元素
+    public int remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("删除失败，数组越界");
+        }
+        int ret = data[index];
+        for (int i = index; i < size - 1; i ++) {
+            data[i] = data[i + 1];
+        }
+        size--;
+        return ret;
+    }
+
+
+    public int removeFirst() {
+        return remove(0);
+    }
+
+
+    public int removeLast() {
+        return remove(size - 1);
+    }
+
+    public void removeElement(int element) {
+        int index = find(element);
+        if (index != -1) {
+            remove(index);
+        }
+    }
+
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("");
+        sb.append(String.format("size = %d, capacity = %d\n", size, data.length));
+        sb.append("[");
         for (int i = 0; i < size; i++) {
-            sb.append(data[i]).append("");
+            sb.append(data[i]);
+            if (i != size - 1){
+                sb.append(",");
+            }
         }
+        sb.append("]");
         return sb.toString();
     }
 }
