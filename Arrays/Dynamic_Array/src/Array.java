@@ -94,8 +94,8 @@ public class Array<E> {
         }
         data[size] = null;
         size--;
-        // 空间缩小
-        if (size == data.length / 2) {
+        // 空间缩小 为1/4的时候 缩小到1/2
+        if(size == data.length / 4 && data.length / 2 != 0) {
             resize(data.length / 2);
         }
         return ret;
