@@ -57,6 +57,14 @@ public class Array<E> {
         return data[index];
     }
 
+    public E getLast() {
+        return get(size - 1);
+    }
+
+    public E getFirst() {
+        return get(0);
+    }
+
     public void set(int index, E element) {
        if (index < 0 || index >= size) {
            throw new IllegalArgumentException("索引无效，数组越界");
