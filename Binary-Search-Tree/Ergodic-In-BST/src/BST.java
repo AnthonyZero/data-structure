@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class BST<E extends Comparable<E>> { //节点可排序比较
 
     private Node root; //根节点
@@ -107,6 +109,22 @@ public class BST<E extends Comparable<E>> { //节点可排序比较
         System.out.println(node.e);
     }
 
+    //二分搜索树 的非递归的前序遍历
+    public void preOrderNR() {
+        Stack<Node> stack = new Stack<>();
+        stack.push(root); //先压入树根
+        while(!stack.isEmpty()) {
+            Node cur = stack.pop(); //谈出当前栈顶 输出元素 就是我们前序遍历的首要元素
+            System.out.println(cur.e);
+
+            if (cur.right != null) {
+                stack.push(cur.right); //因为栈是先进后出 我们是先遍历左子树 所以先压入右子树节点
+            }
+            if (cur.left != null) {
+                stack.push(cur.left);
+            }
+        }
+    }
 
     @Override
     public String toString(){
