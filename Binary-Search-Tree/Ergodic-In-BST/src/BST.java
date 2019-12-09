@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
 
 public class BST<E extends Comparable<E>> { //节点可排序比较
@@ -109,7 +111,7 @@ public class BST<E extends Comparable<E>> { //节点可排序比较
         System.out.println(node.e);
     }
 
-    //二分搜索树 的非递归的前序遍历
+    //二分搜索树 的非递归的前序遍历  也叫做深度优先遍历（栈）
     public void preOrderNR() {
         Stack<Node> stack = new Stack<>();
         stack.push(root); //先压入树根
@@ -122,6 +124,26 @@ public class BST<E extends Comparable<E>> { //节点可排序比较
             }
             if (cur.left != null) {
                 stack.push(cur.left);
+            }
+        }
+    }
+
+    // 层序遍历 也称为广度优先遍历（用队列）
+    public void levelOrder() {
+        if (root == null) {
+            return;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+        while(!queue.isEmpty()) {
+            Node node = queue.remove();
+            System.out.println(node.e);
+
+            if (node.left != null) {
+                queue.add(node.left);
+            }
+            if (node.right != null) {
+                queue.add(node.right);
             }
         }
     }
