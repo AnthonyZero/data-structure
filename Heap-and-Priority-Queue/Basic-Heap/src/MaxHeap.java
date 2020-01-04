@@ -57,4 +57,54 @@ public class MaxHeap<E extends Comparable<E>> {
             index = parent(index);
         }
     }
+
+    // 获取堆中最大的元素
+    public E findMax() {
+        if (data.isEmpty()) {
+            throw new IllegalArgumentException("堆为空，获取最大元素失败");
+        }
+        return data.get(0);
+    }
+
+    public E extractMax() {
+        E ret = findMax();
+
+        // 交换第0个 和最后一个元素
+        E temp = data.get(data.getSize() - 1);
+        data.set(data.getSize() - 1, ret);
+        data.set(0, temp);
+
+        //删除最大的元素
+        data.removeLast();
+
+        return ret;
+    }
+
+    // 指定哪个索引的元素 下沉
+    private void siftDown(int index) {
+        while (leftChild(index) < data.getSize()) {
+            // 当左孩子索引没有越界 说明存在左还是 可以下沉
+            int maxIndex = leftChild(index); //先假定maxIndex是左右孩子较大的元素索引
+
+            //存在右孩子 更新maxIndex
+            if (maxIndex + 1 < data.getSize() &&
+                data.get(maxIndex + 1).compareTo(data.get(maxIndex)) > 0) {
+                //并且右孩子 元素大于左孩子元素 更新maxIndex;
+                maxIndex = maxIndex + 1; //此时是右孩子索引
+            }
+
+            //比较当前下沉元素 和左右孩子元素较大值 看是否替换
+            if (data.get(index).compareTo(data.get(maxIndex)) >= 0) {
+                break; //大于等于 退出完成 当前节点已经大于左右孩子节点
+            }
+
+            //替换
+            E temp = data.get(index);
+            data.set(index, data.get(maxIndex));
+            data.set(maxIndex, temp);
+
+            //更新index 继续循环
+            index = maxIndex;
+        }
+    }
 }
