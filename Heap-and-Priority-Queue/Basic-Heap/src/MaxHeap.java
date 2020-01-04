@@ -109,4 +109,14 @@ public class MaxHeap<E extends Comparable<E>> {
             index = maxIndex;
         }
     }
+
+
+    // 取出堆中的最大元素，并且替换成元素e
+    public E replace(E e){
+
+        E ret = findMax();
+        data.set(0, e);
+        siftDown(0);
+        return ret;
+    }
 }
