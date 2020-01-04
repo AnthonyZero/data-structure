@@ -92,8 +92,8 @@ public class Array<E> {
         for (int i = index; i < size - 1; i ++) {
             data[i] = data[i + 1];
         }
-        data[size] = null;
         size--;
+        data[size] = null;
         // 空间缩小 为1/4的时候 缩小到1/2
         if(size == data.length / 4 && data.length / 2 != 0) {
             resize(data.length / 2);

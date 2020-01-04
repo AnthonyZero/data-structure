@@ -92,8 +92,8 @@ public class Array<E> {
         for (int i = index; i < size - 1; i ++) {
             data[i] = data[i + 1];
         }
-        data[size] = null;
         size--;
+        data[size] = null;
         return ret;
     }
 
