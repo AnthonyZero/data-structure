@@ -37,17 +37,17 @@ public class Array<E> {
 
     //指定位置插入元素
     public void add(int index, E element) {
-       if (size == data.length) {
-           throw new IllegalArgumentException("添加元素失败，数组已不能容纳任何元素");
-       }
-       if (index < 0 || index > size) {
-           throw new IllegalArgumentException("插入元素非法，index需在0到size之间");
-       }
-       for (int i = size - 1; i >= index; i-- ) {
-           data[i + 1] = data[i];       //从index开始后面的元素依次向后移动
-       }
-       data[index] = element;
-       size++;
+        if (index < 0 || index > size) {
+            throw new IllegalArgumentException("插入元素非法，index需在0到size之间");
+        }
+        if (size == data.length) {
+            resize(2 * data.length);
+        }
+        for (int i = size - 1; i >= index; i-- ) {
+            data[i + 1] = data[i];       //从index开始后面的元素依次向后移动
+        }
+        data[index] = element;
+        size++;
     }
 
     public E get(int index) {
@@ -58,10 +58,10 @@ public class Array<E> {
     }
 
     public void set(int index, E element) {
-       if (index < 0 || index >= size) {
-           throw new IllegalArgumentException("索引无效，数组越界");
-       }
-       data[index] = element;
+        if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("索引无效，数组越界");
+        }
+        data[index] = element;
     }
 
     public boolean contains(E element) {
@@ -94,6 +94,10 @@ public class Array<E> {
         }
         data[size] = null;
         size--;
+        // 空间缩小 为1/4的时候 缩小到1/2
+        if(size == data.length / 4 && data.length / 2 != 0) {
+            resize(data.length / 2);
+        }
         return ret;
     }
 
@@ -127,5 +131,14 @@ public class Array<E> {
         }
         sb.append("]");
         return sb.toString();
+    }
+
+    //扩容
+    private void resize(int newCapacity) {
+        E[] newData = (E[])new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newData[i] = data[i];
+        }
+        data = newData;
     }
 }

@@ -77,6 +77,8 @@ public class MaxHeap<E extends Comparable<E>> {
         //删除最大的元素
         data.removeLast();
 
+        siftDown(0);
+
         return ret;
     }
 
