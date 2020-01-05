@@ -50,7 +50,7 @@ public class Solution {
         }
 
         //优先队列 一致维持k个元素 这k个元素即是我们的结果
-        PriorityQueue<Freq> queue = new PriorityQueue<>(); //优先队列 频率最小的在队头
+        PriorityQueue<Freq> queue = new PriorityQueue<>(); //优先队列 频率最小的也就是优先级最大的 在队头
         for (int key : map.keySet()) {
             if (queue.getSize() < k) {
                 queue.enqueue(new Freq(key, map.get(key)));
