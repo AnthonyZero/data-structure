@@ -1,6 +1,6 @@
 public class SegmentTree<E> {
 
-    private E[] tree;  //根据业务决定后 建立的线段树 的数组
+    private E[] tree;  //根据业务决定后 建立的线段树 的数组 保存每个区间的结果 4*data.length
     private E[] data;  //元素数据
     private Merger<E> merger;
 
