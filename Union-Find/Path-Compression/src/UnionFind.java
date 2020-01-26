@@ -55,11 +55,17 @@ public class UnionFind implements UF {
 
         // 不断去查询自己的父亲节点, 直到到达根节点
         // 根节点的特点: parent[p] == p
-        while( p != parent[p] ){
-            // 路径压缩
-            parent[p] = parent[parent[p]];
-            p = parent[p];
-        }
-        return p;
+//        while( p != parent[p] ){
+//            // 路径压缩
+//            parent[p] = parent[parent[p]];
+//            p = parent[p];
+//        }
+//        return p;
+
+
+        // path compression 2, 递归算法
+        if(p != parent[p])
+            parent[p] = find(parent[p]);
+        return parent[p];
     }
 }
