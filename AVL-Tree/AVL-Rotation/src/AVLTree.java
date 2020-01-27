@@ -169,12 +169,23 @@ public class AVLTree<K extends Comparable<K>, V> {
         // 添加元素之后 为了保证平衡 进行旋转 旋转一个节点即可。
         // 在递归返回的时候（回溯） 检查到了一个节点不满足平衡因子<=1 进行旋转。一次即可 上面的节点进行旋转后无需处理了
 
-        // 平衡维护
+        // 平衡维护 LL情况
         if (balanceFactor > 1 && getBalanceFactor(node.left) > 0) {
             return rightRotate(node); //右旋转 返回新的根节点
         }
+        // RR 情况
         if (balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
             return leftRotate(node); //左旋转 返回新的根节点
+        }
+        //LR 情况
+        if (balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+        //RL 情况
+        if (balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
         }
 
         return node;
