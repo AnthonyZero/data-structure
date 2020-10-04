@@ -1,4 +1,3 @@
-import java.util.Date;
 import java.util.Random;
 
 public class SimpleSkipList {
@@ -13,7 +12,7 @@ public class SimpleSkipList {
     private Node tail; //尾节点 最高一层的尾
     private int size;
     private int height; //高度 默认0层 实际代表有最低一层 0对应真实高度1
-    private Random random;
+    private Random random; //随机函数 取决于是否扩高
 
     public SimpleSkipList() {
         head = new Node(null, HEAD_NODE);
@@ -23,7 +22,7 @@ public class SimpleSkipList {
         random = new Random(System.currentTimeMillis());
     }
 
-    //最后落到最底层 方便add元素的时候 使用此方法
+    //核心：最后落到最底层 方便add元素的时候 使用此方法
     private Node find(Integer element) {
         Node cur = head;
         //不断寻找到最底层
@@ -62,7 +61,7 @@ public class SimpleSkipList {
         }
     }
 
-
+    //添加元素
     public void add(Integer element) {
         //新加节点 添加到最底层 左右节点之间
         Node leftNode = this.find(element);
@@ -121,6 +120,7 @@ public class SimpleSkipList {
         size ++;
     }
 
+    //遍历
     public void dumpSkipList() {
         //实际高度为 height + 1
         System.out.println(String.format("Total height is [%d]", height + 1));
@@ -140,6 +140,44 @@ public class SimpleSkipList {
             System.out.println();
         }
         System.out.println("*************************");
+    }
+
+    //在跳表中删除一个值，如果element不存在，直接返回false. 如果存在多个element ，删除其中任意一个即可
+    //每一层 此元素（如果存在） 删除
+    public boolean remove(Integer element) {
+        if(!contains(element)) {
+            return false;
+        }
+        size --; //元素个数 -1
+        Node targetNode = find(element); //要删除的节点
+        while(targetNode != null) {
+            Node nextDelNode = targetNode.up;
+
+            targetNode.up = null;
+            targetNode.down = null;
+            Node leftNode = targetNode.left;
+            leftNode.right = targetNode.right;
+            targetNode.right.left = leftNode;
+
+            targetNode = nextDelNode; //往上一层继续循环
+        }
+
+        //调整头节点 由于删除了元素 可能有些 高层的没有数据节点 删除
+        Node newHead = head;
+        Node newTail = tail;
+        while(newHead.right.type != DATA_NODE) {
+            Node downNode = newHead.down; //往下一层 赋值
+            newTail = newTail.down;
+
+            newHead.right.down = null; //这一层 没有数据节点 只有head 和tail
+            newHead.down = null;
+            newHead = downNode; //继续看下一层
+
+            height--; //高度--
+        }
+        head = newHead;
+        tail = newTail;
+        return true;
     }
 
     public boolean isEmpty() {
@@ -175,12 +213,12 @@ public class SimpleSkipList {
 //        skipList.add(5);
 //        skipList.dumpSkipList();
 
-        SimpleSkipList skip = new SimpleSkipList();
-        Random random = new Random();
-        for(int i = 0; i < 100; i++) {
-            skip.add(random.nextInt(1000));
-        }
-        skip.dumpSkipList();
+//        SimpleSkipList skip = new SimpleSkipList();
+//        Random random = new Random();
+//        for(int i = 0; i < 100; i++) {
+//            skip.add(random.nextInt(1000));
+//        }
+//        skip.dumpSkipList();
 
         SimpleSkipList skipList = new SimpleSkipList();
         int[] arr = new int[]{23,43,12,45,66,77,100,4,69,22,12,6,15,78,33,87,56,90,18,20};
@@ -189,5 +227,17 @@ public class SimpleSkipList {
         }
         skipList.dumpSkipList();
         System.out.println(skipList.contains(100));
+        System.out.println(skipList.remove(99));
+        System.out.println(skipList.remove(33));
+        System.out.println(skipList.remove(12));
+        System.out.println(skipList.remove(56));
+        skipList.dumpSkipList();
+
+        arr = new int[]{30, 55, 33, 85, 10};
+        for(int i = 0; i < arr.length; i++) {
+            skipList.add(arr[i]);
+        }
+        skipList.dumpSkipList();
+
     }
 }
