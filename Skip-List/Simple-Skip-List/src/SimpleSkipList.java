@@ -48,13 +48,13 @@ public class SimpleSkipList {
     //是否存在此元素节点
     public boolean contains(Integer element) {
         Node node = this.find(element);
-        return node.value == element;
+        return node.value.equals(element);
     }
 
     //通过元素值返回节点 不存在返回空
     public Node get(Integer element) {
         Node node = this.find(element);
-        if(node.value == element) {
+        if(node.value.equals(element)) {
             return node;
         } else {
             return null;
